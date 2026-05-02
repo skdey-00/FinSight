@@ -1,0 +1,3 @@
+"""
+FinSight AI - Models Package
+"""

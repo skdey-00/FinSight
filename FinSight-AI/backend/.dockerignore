@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data files (mount as volume instead)
+data/*.csv
+data/*.json
+
+# ML Models (mount as volume)
+ml_models/*.pkl
+ml_models/*.h5
+
+# Cache
+__pycache__/
+*.pyc
