@@ -9,36 +9,60 @@ import {
   Cell
 } from 'recharts'
 
-const COLORS = ['#0ea5e9', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899']
+const COLORS = ['#3b82f6', '#22c55e', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899']
 
 export default function BarChart({ data, dataKey = 'value', xAxisKey = 'name', height = 300 }) {
-  return (
-    <ResponsiveContainer width="100%" height={height}>
-      <RechartsBarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-        <XAxis
-          dataKey={xAxisKey}
-          stroke="#94a3b8"
-          tick={{ fill: '#94a3b8' }}
-        />
-        <YAxis
-          stroke="#94a3b8"
-          tick={{ fill: '#94a3b8' }}
-        />
-        <Tooltip
-          contentStyle={{
-            backgroundColor: '#1e293b',
-            border: '1px solid #334155',
-            borderRadius: '8px',
-            color: '#f1f5f9'
-          }}
-        />
-        <Bar dataKey={dataKey} radius={[4, 4, 0, 0]}>
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="neo-pressed px-4 py-3">
+          <p className="text-xs text-slate-500 mb-2">{label}</p>
+          {payload.map((entry, index) => (
+            <p key={index} className="text-sm">
+              <span style={{ color: entry.color }}>{entry.name}:</span>{' '}
+              <span className="font-semibold text-white">{entry.value}</span>
+            </p>
           ))}
-        </Bar>
-      </RechartsBarChart>
-    </ResponsiveContainer>
+        </div>
+      )
+    }
+    return null
+  }
+
+  return (
+    <div className="w-full">
+      <ResponsiveContainer width="100%" height={height}>
+        <RechartsBarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="#1e1e29"
+            strokeOpacity={0.5}
+          />
+          <XAxis
+            dataKey={xAxisKey}
+            stroke="#475569"
+            tick={{ fill: '#64748b', fontSize: 12 }}
+            axisLine={{ stroke: '#1e1e29' }}
+            tickLine={{ stroke: '#1e1e29' }}
+          />
+          <YAxis
+            stroke="#475569"
+            tick={{ fill: '#64748b', fontSize: 12 }}
+            axisLine={{ stroke: '#1e1e29' }}
+            tickLine={{ stroke: '#1e1e29' }}
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Bar
+            dataKey={dataKey}
+            radius={[8, 8, 0, 0]}
+            animationDuration={600}
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Bar>
+        </RechartsBarChart>
+      </ResponsiveContainer>
+    </div>
   )
 }

@@ -42,7 +42,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-neo p-4">
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -54,7 +54,7 @@ export default function Login() {
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 shadow-lg shadow-primary-500/25">
+          <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 neo-icon">
             <TrendingUp className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-white">FinSight AI</h1>
@@ -62,7 +62,7 @@ export default function Login() {
         </div>
 
         {/* Login Card */}
-        <div className="card">
+        <div className="neo-card">
           <div className="mb-6">
             <h2 className="text-xl font-semibold text-white">Welcome back</h2>
             <p className="mt-1 text-sm text-slate-400">
@@ -82,7 +82,7 @@ export default function Login() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Enter your username"
-                  className="input-field w-full pl-10"
+                  className="neo-input w-full pl-10"
                   disabled={isLoading}
                   autoFocus
                 />
@@ -101,7 +101,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
-                    className="input-field w-full pl-10"
+                    className="neo-input w-full pl-10"
                     disabled={isLoading}
                   />
                 </div>
@@ -119,7 +119,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={!username.trim() || isLoading}
-              className="btn-primary w-full flex items-center justify-center gap-2 py-3"
+              className="neo-btn-primary w-full flex items-center justify-center gap-2 py-3"
             >
               {isLoading ? (
                 <>
@@ -136,9 +136,9 @@ export default function Login() {
           </form>
 
           <div className="my-6 flex items-center gap-4">
-            <div className="flex-1 border-t border-slate-700" />
+            <div className="flex-1 border-t border-white/10" />
             <span className="text-xs text-slate-500">Quick demo</span>
-            <div className="flex-1 border-t border-slate-700" />
+            <div className="flex-1 border-t border-white/10" />
           </div>
 
           <div className="grid grid-cols-3 gap-3">
@@ -146,7 +146,7 @@ export default function Login() {
               <button
                 key={name}
                 onClick={() => quickLogin(name.toLowerCase())}
-                className="rounded-lg border border-slate-700 bg-slate-800/50 py-2 text-sm text-slate-300 hover:border-primary-500 hover:bg-primary-900/20 hover:text-white transition-all"
+                className="neo-pressed py-2 text-sm text-slate-300 hover:text-white transition-colors rounded-xl"
                 disabled={isLoading}
               >
                 {name}

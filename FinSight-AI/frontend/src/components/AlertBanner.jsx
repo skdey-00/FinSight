@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, AlertTriangle, AlertCircle, Info } from 'lucide-react'
+import { X, AlertTriangle, AlertCircle, Info, Bell } from 'lucide-react'
 import { useAlertSettings } from '../contexts/AuthContext'
 
 export default function AlertBanner({ metrics, onDismiss }) {
@@ -33,11 +33,11 @@ export default function AlertBanner({ metrics, onDismiss }) {
   const getAlertStyles = (severity) => {
     switch (severity) {
       case 'critical':
-        return 'bg-red-900/40 border-red-700 text-red-300'
+        return 'border-accent-danger/30 bg-accent-danger/5 text-accent-danger'
       case 'warning':
-        return 'bg-yellow-900/40 border-yellow-700 text-yellow-300'
+        return 'border-accent-warning/30 bg-accent-warning/5 text-accent-warning'
       default:
-        return 'bg-blue-900/40 border-blue-700 text-blue-300'
+        return 'border-primary-500/30 bg-primary-500/5 text-primary-400'
     }
   }
 
@@ -47,30 +47,33 @@ export default function AlertBanner({ metrics, onDismiss }) {
   }
 
   return (
-    <div className={`border-l-4 ${alerts[0]?.severity === 'critical' ? 'border-l-red-500' : 'border-l-yellow-500'}`}>
+    <div className="border-b border-white/5">
       {alerts.map((alert, index) => (
         <div
           key={index}
           className={`
-            flex items-start gap-3 p-4 border backdrop-blur-sm animate-fade-in
+            flex items-center gap-4 px-6 py-4 border-x-4 backdrop-blur-sm animate-fade-in
             ${getAlertStyles(alert.severity)}
           `}
+          style={{ borderLeftWidth: '4px', borderRightWidth: '0' }}
         >
-          <div className="flex-shrink-0 mt-0.5">
+          <div className="flex-shrink-0 neo-icon p-2">
             {getAlertIcon(alert.severity)}
           </div>
 
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h4 className="font-medium capitalize">{alert.type} Alert</h4>
-              <span className="text-xs uppercase opacity-75">{alert.severity}</span>
+              <h4 className="font-semibold text-white capitalize">{alert.type} Alert</h4>
+              <span className="text-xs uppercase rounded-full neo-pressed px-2 py-0.5 opacity-75">
+                {alert.severity}
+              </span>
             </div>
-            <p className="mt-1 text-sm">{alert.message}</p>
+            <p className="mt-1 text-sm text-slate-300">{alert.message}</p>
           </div>
 
           <button
             onClick={handleDismiss}
-            className="flex-shrink-0 rounded p-1 opacity-70 hover:opacity-100 transition-opacity"
+            className="flex-shrink-0 neo-icon p-2 text-slate-400 hover:text-white"
           >
             <X className="h-4 w-4" />
           </button>
@@ -87,12 +90,12 @@ export function AlertBadge({ count, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="relative rounded-full bg-red-900/50 p-2 text-red-400 hover:bg-red-900/70 transition-colors"
+      className="relative neo-icon p-2 text-accent-danger"
       title={`${count} active alert${count > 1 ? 's' : ''}`}
     >
-      <AlertTriangle className="h-4 w-4" />
+      <Bell className="h-4 w-4 animate-subtle-pulse" />
       {count > 0 && (
-        <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+        <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-accent-danger to-red-600 text-[10px] font-bold text-white shadow-lg">
           {count > 9 ? '9+' : count}
         </span>
       )}

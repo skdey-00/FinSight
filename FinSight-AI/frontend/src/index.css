@@ -4,33 +4,191 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 font-sans;
+    background-color: #1a1a23;
+    color: rgb(241 245 249);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #374151 #1a1a23;
   }
 }
 
 @layer components {
+  /* ==================== NEOMORPHIC UTILITIES ==================== */
+
+  /* Neomorphic card - extruded from surface */
+  .neo-card {
+    @apply rounded-2xl p-6;
+    background: #1a1a23;
+    box-shadow: 8px 8px 16px #16161e, -8px -8px 16px #1e1e29;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .neo-card:hover {
+    box-shadow: 10px 10px 20px #121219, -10px -10px 20px #22222d;
+  }
+
+  /* Neomorphic pressed state (for toggles, active buttons) */
+  .neo-pressed {
+    @apply rounded-2xl;
+    background: #1a1a23;
+    box-shadow: inset 6px 6px 12px #16161e, inset -6px -6px 12px #1e1e29;
+  }
+
+  /* Neomorphic button */
+  .neo-btn {
+    @apply rounded-xl px-6 py-3 font-medium text-white;
+    background: #1a1a23;
+    box-shadow: 6px 6px 12px #16161e, -6px -6px 12px #1e1e29;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .neo-btn:hover {
+    box-shadow: 8px 8px 16px #121219, -8px -8px 16px #22222d;
+  }
+
+  .neo-btn:active {
+    box-shadow: inset 4px 4px 8px #16161e, inset -4px -4px 8px #1e1e29;
+  }
+
+  /* Neomorphic primary button (with accent) */
+  .neo-btn-primary {
+    @apply neo-btn;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 6px 6px 12px #16161e, -2px -2px 8px rgba(59, 130, 246, 0.2);
+    transition: box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  .neo-btn-primary:hover {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    box-shadow: 8px 8px 16px #121219, -2px -2px 12px rgba(59, 130, 246, 0.3);
+  }
+
+  .neo-btn-primary:active {
+    box-shadow: inset 4px 4px 8px #1e3a5f, inset -2px -2px 4px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Neomorphic secondary button */
+  .neo-btn-secondary {
+    @apply neo-btn text-slate-300;
+  }
+
+  .neo-btn-secondary:hover {
+    @apply text-white;
+  }
+
+  /* Neomorphic input */
+  .neo-input {
+    @apply rounded-xl px-4 py-3 text-white;
+    background: #1a1a23;
+    box-shadow: inset 4px 4px 8px #16161e, inset -4px -4px 8px #1e1e29;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .neo-input:focus {
+    box-shadow: inset 6px 6px 12px #16161e, inset -6px -6px 12px #1e1e29,
+                0 0 0 2px rgba(59, 130, 246, 0.3);
+    outline: none;
+  }
+
+  .neo-input::placeholder {
+    color: #64748b;
+  }
+
+  /* Neomorphic icon container */
+  .neo-icon {
+    @apply flex h-12 w-12 items-center justify-center rounded-xl;
+    background: #1a1a23;
+    box-shadow: 4px 4px 8px #16161e, -4px -4px 8px #1e1e29;
+  }
+
+  /* Neomorphic sidebar item */
+  .neo-nav-item {
+    @apply flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium;
+    background: transparent;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .neo-nav-item:hover {
+    box-shadow: 6px 6px 12px #16161e, -6px -6px 12px #1e1e29;
+  }
+
+  .neo-nav-item.active {
+    background: #1a1a23;
+    box-shadow: inset 4px 4px 8px #16161e, inset -4px -4px 8px #1e1e29;
+  }
+
+  /* ==================== GLASS EFFECTS ==================== */
+  .glass-card {
+    @apply rounded-2xl p-6 backdrop-blur-xl;
+    background: rgba(26, 26, 35, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* ==================== GLOW EFFECTS ==================== */
+  .glow-primary {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), 8px 8px 16px #16161e, -8px -8px 16px #1e1e29;
+  }
+
+  .glow-success {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3), 8px 8px 16px #16161e, -8px -8px 16px #1e1e29;
+  }
+
+  /* ==================== GRADIENT TEXT ==================== */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+  }
+
+  .gradient-text-subtle {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+  }
+
+  /* ==================== UTILITY ANIMATIONS ==================== */
+  .hover-lift {
+    transition: box-shadow 0.2s ease;
+  }
+
+  .hover-lift:hover {
+    box-shadow: 10px 10px 20px #121219, -10px -10px 20px #22222d;
+  }
+
+  /* Stagger children animations */
+  .animate-stagger > * {
+    animation-delay: calc(var(--index) * 100ms);
+  }
+
+  /* ==================== LEGACY COMPATIBILITY ==================== */
   .card {
-    @apply bg-slate-900 border border-slate-800 rounded-xl p-6;
+    @apply neo-card;
   }
 
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium px-4 py-2 rounded-lg transition-colors;
+    @apply neo-btn-primary;
   }
 
   .btn-primary:disabled {
-    @apply bg-primary-900 text-slate-400 cursor-not-allowed opacity-50;
+    @apply opacity-50 cursor-not-allowed;
+    background: linear-gradient(135deg, #1e3a5f 0%, #1e3a5f 100%);
+    box-shadow: inset 4px 4px 8px #16161e, inset -4px -4px 8px #1e1e29;
   }
 
   .btn-secondary {
-    @apply bg-slate-800 hover:bg-slate-700 text-slate-100 font-medium px-4 py-2 rounded-lg transition-colors;
+    @apply neo-btn-secondary;
   }
 
   .btn-secondary:disabled {
-    @apply bg-slate-900 text-slate-500 cursor-not-allowed opacity-50;
+    @apply opacity-50 cursor-not-allowed text-slate-600;
   }
 
   .input-field {
-    @apply bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500;
+    @apply neo-input;
   }
 
   .risk-badge {
@@ -38,70 +196,120 @@
   }
 
   .risk-low {
-    @apply bg-green-900/50 text-green-400 border border-green-800;
+    @apply text-green-400;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+    box-shadow: inset 2px 2px 4px rgba(22, 163, 74, 0.1), inset -2px -2px 4px rgba(34, 197, 94, 0.05);
+    border: 1px solid rgba(34, 197, 94, 0.2);
   }
 
   .risk-medium {
-    @apply bg-yellow-900/50 text-yellow-400 border border-yellow-800;
+    @apply text-yellow-400;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+    box-shadow: inset 2px 2px 4px rgba(180, 83, 9, 0.1), inset -2px -2px 4px rgba(245, 158, 11, 0.05);
+    border: 1px solid rgba(245, 158, 11, 0.2);
   }
 
   .risk-high {
-    @apply bg-red-900/50 text-red-400 border border-red-800;
+    @apply text-red-400;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+    box-shadow: inset 2px 2px 4px rgba(185, 28, 28, 0.1), inset -2px -2px 4px rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.2);
   }
 
+  /* Neomorphic toggle button */
   .toggle-button {
-    @apply relative h-6 w-11 cursor-pointer rounded-full transition-colors duration-200;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 1.75rem;
+    width: 3.25rem;
+    cursor: pointer;
+    border-radius: 0.875rem;
+    background: #1a1a23;
+    box-shadow: inset 2px 2px 4px #16161e, inset -2px -2px 4px #1e1e29;
+    transition: background 0.2s ease;
   }
 
   .toggle-button.active {
-    @apply bg-primary-600;
-  }
-
-  .toggle-button.inactive {
-    @apply bg-slate-700;
-  }
-
-  .toggle-button:hover {
-    @apply opacity-90;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: inset 2px 2px 4px rgba(37, 99, 235, 0.3);
   }
 
   .toggle-thumb {
-    @apply absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 pointer-events-none;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
   }
 
   .toggle-thumb.active {
-    @apply translate-x-6;
-  }
-
-  .toggle-thumb.inactive {
-    @apply translate-x-1;
+    transform: translateX(1.5rem);
   }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - neomorphic style */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-slate-900;
+  background: #1a1a23;
+  box-shadow: inset 2px 2px 4px #16161e, inset -2px -2px 4px #1e1e29;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-700 rounded-full;
+  background: linear-gradient(135deg, #2a2a35 0%, #252530 100%);
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px #16161e, -2px -2px 4px #1e1e29;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-600;
+  background: linear-gradient(135deg, #3a3a45 0%, #353540 100%);
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ==================== SKELETON LOADING ==================== */
+.skeleton {
+  @apply rounded-xl animate-pulse;
+  background: linear-gradient(90deg, #1a1a23 25%, #1e1e29 50%, #1a1a23 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
+/* ==================== SCROLL REVEAL ==================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==================== VALUE COUNTING ANIMATION ==================== */
+.count-value {
+  display: inline-block;
+  transition: all 0.3s ease-out;
+}
+
+/* ==================== EXPANDABLE CARD ==================== */
+.expandable-card {
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expandable-card.expanded {
+  max-height: 500px;
+}
+
+.expandable-card.collapsed {
+  max-height: 120px;
 }

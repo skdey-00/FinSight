@@ -186,10 +186,10 @@ export default function HelpGuide() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
-      <div className="card">
+      <div className="neo-card">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-700">
-            <BookOpen className="h-6 w-6 text-white" />
+          <div className="neo-icon p-3">
+            <BookOpen className="h-6 w-6 text-primary-400" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-white">FinSight AI Guide</h1>
@@ -199,9 +199,11 @@ export default function HelpGuide() {
       </div>
 
       {/* Quick Start Checklist */}
-      <div className="card">
+      <div className="neo-card">
         <h2 className="mb-4 text-lg font-semibold text-white flex items-center gap-2">
-          <Lightbulb className="h-5 w-5 text-yellow-400" />
+          <div className="neo-icon p-1.5">
+            <Lightbulb className="h-4 w-4 text-accent-warning" />
+          </div>
           Quick Start Checklist
         </h2>
         <div className="space-y-3">
@@ -214,22 +216,22 @@ export default function HelpGuide() {
           ].map((step) => (
             <label
               key={step.id}
-              className="flex cursor-pointer items-center gap-3 rounded-lg bg-slate-800/50 p-3 hover:bg-slate-800 transition-colors"
+              className="flex cursor-pointer items-center gap-3 neo-pressed rounded-xl p-3 hover:shadow-lg transition-shadow"
             >
-              <input
-                type="checkbox"
-                checked={completedSteps.includes(step.id)}
-                onChange={() => toggleComplete(step.id)}
-                className="h-5 w-5 rounded border-slate-600 bg-slate-700 text-primary-500 focus:ring-primary-500"
-              />
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  checked={completedSteps.includes(step.id)}
+                  onChange={() => toggleComplete(step.id)}
+                  className="peer h-5 w-5 rounded border-2 border-slate-600 bg-slate-800 appearance-none cursor-pointer transition-all checked:border-accent-success checked:bg-accent-success"
+                />
+                <Check className="absolute top-0.5 left-0.5 h-4 w-4 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" />
+              </div>
               <span className={`flex-1 text-slate-300 ${
                 completedSteps.includes(step.id) ? 'line-through opacity-50' : ''
               }`}>
                 {step.text}
               </span>
-              {completedSteps.includes(step.id) && (
-                <Check className="h-5 w-5 text-green-400" />
-              )}
             </label>
           ))}
         </div>
@@ -244,17 +246,17 @@ export default function HelpGuide() {
           return (
             <div
               key={section.id}
-              className={`card cursor-pointer transition-all ${
+              className={`neo-card cursor-pointer transition-all ${
                 isExpanded ? 'md:col-span-2' : ''
               }`}
               onClick={() => toggleSection(section.id)}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${
-                    isExpanded ? 'bg-primary-600' : 'bg-slate-800'
+                  <div className={`neo-icon ${
+                    isExpanded ? 'bg-gradient-to-br from-primary-500 to-primary-700' : ''
                   } transition-colors`}>
-                    <Icon className={`h-5 w-5 ${isExpanded ? 'text-white' : 'text-slate-400'}`} />
+                    <Icon className={`h-5 w-5 ${isExpanded ? 'text-white' : 'text-primary-400'}`} />
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">{section.title}</h3>
@@ -271,9 +273,9 @@ export default function HelpGuide() {
               </div>
 
               {isExpanded && (
-                <div className="mt-4 space-y-4 border-t border-slate-700 pt-4">
+                <div className="mt-4 space-y-4 border-t border-white/5 pt-4">
                   {section.content.map((item, idx) => (
-                    <div key={idx} className="rounded-lg bg-slate-800/50 p-4">
+                    <div key={idx} className="neo-pressed p-4">
                       <h4 className="mb-2 font-medium text-white">{item.title}</h4>
                       <p className="whitespace-pre-line text-sm text-slate-400">
                         {item.description}
@@ -288,9 +290,11 @@ export default function HelpGuide() {
       </div>
 
       {/* Keyboard Shortcuts */}
-      <div className="card">
+      <div className="neo-card">
         <h2 className="mb-4 text-lg font-semibold text-white flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-primary-400" />
+          <div className="neo-icon p-1">
+            <TrendingUp className="h-4 w-4 text-primary-400" />
+          </div>
           Keyboard Shortcuts
         </h2>
         <div className="grid gap-3 md:grid-cols-2">
@@ -300,9 +304,9 @@ export default function HelpGuide() {
             { key: 'Ctrl + P', desc: 'Go to Portfolio' },
             { key: 'Ctrl + A', desc: 'Go to AI Chat' }
           ].map((shortcut) => (
-            <div key={shortcut.key} className="flex items-center justify-between rounded-lg bg-slate-800/50 p-3">
+            <div key={shortcut.key} className="flex items-center justify-between neo-pressed p-3 rounded-xl">
               <span className="text-sm text-slate-400">{shortcut.desc}</span>
-              <kbd className="rounded bg-slate-700 px-2 py-1 text-xs text-white font-mono">
+              <kbd className="neo-pressed px-3 py-1 text-xs text-white font-mono">
                 {shortcut.key}
               </kbd>
             </div>
@@ -311,10 +315,10 @@ export default function HelpGuide() {
       </div>
 
       {/* Need More Help */}
-      <div className="card border-primary-500/30 bg-primary-900/10">
+      <div className="neo-card border border-primary-500/20">
         <div className="flex items-start gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-600/20">
-            <AlertTriangle className="h-5 w-5 text-primary-400" />
+          <div className="neo-icon p-2">
+            <AlertTriangle className="h-4 w-4 text-primary-400" />
           </div>
           <div>
             <h3 className="font-semibold text-white">Need more help?</h3>

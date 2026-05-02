@@ -315,7 +315,7 @@ export default function PortfolioInput() {
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header with Live Status */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Portfolio Builder</h1>
           <p className="mt-2 text-slate-400">
@@ -324,8 +324,8 @@ export default function PortfolioInput() {
         </div>
         <div className="flex items-center gap-3">
           {/* Live Price Status */}
-          <div className="flex items-center gap-2 rounded-lg bg-slate-800 px-4 py-2">
-            <div className={`h-2 w-2 rounded-full ${usingLivePrices ? 'bg-green-400 animate-pulse' : 'bg-yellow-400'}`} />
+          <div className="flex items-center gap-2 neo-icon px-4 py-2">
+            <div className={`h-2 w-2 rounded-full ${usingLivePrices ? 'bg-accent-success animate-subtle-pulse' : 'bg-accent-warning'}`} />
             <span className="text-sm text-slate-400">
               {usingLivePrices ? 'Live' : 'Offline'}
             </span>
@@ -337,7 +337,7 @@ export default function PortfolioInput() {
           <button
             onClick={refetchPrices}
             disabled={pricesLoading}
-            className="rounded-lg bg-slate-800 p-2 text-slate-400 hover:bg-slate-700 hover:text-white transition-colors"
+            className="neo-icon p-2.5 text-slate-400 hover:text-white disabled:opacity-50"
             title="Refresh prices"
           >
             <RefreshCw className={`h-4 w-4 ${pricesLoading ? 'animate-spin' : ''}`} />
@@ -348,51 +348,51 @@ export default function PortfolioInput() {
       {/* Portfolio Summary Cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Tooltip term="Portfolio Value">
-          <div className="card">
+          <div className="neo-card group hover-lift">
             <div className="flex items-center gap-2">
               <p className="text-sm text-slate-400">Portfolio Value</p>
               <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
             </div>
-            <p className="mt-1 text-2xl font-bold text-white">
+            <p className="mt-2 text-3xl font-bold text-white tracking-tight">
               ${portfolioMetrics.totalValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
             </p>
             {pricesLoading && (
-              <p className="mt-1 text-xs text-slate-500">Updating...</p>
+              <p className="mt-2 text-xs text-slate-500">Updating...</p>
             )}
           </div>
         </Tooltip>
         <Tooltip term="Total Cost">
-          <div className="card">
+          <div className="neo-card group hover-lift">
             <div className="flex items-center gap-2">
               <p className="text-sm text-slate-400">Total Cost</p>
               <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
             </div>
-            <p className="mt-1 text-2xl font-bold text-white">
+            <p className="mt-2 text-3xl font-bold text-white tracking-tight">
               ${portfolioMetrics.totalCost.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
             </p>
           </div>
         </Tooltip>
         <Tooltip term="Total Gain/Loss">
-          <div className="card">
+          <div className="neo-card group hover-lift">
             <div className="flex items-center gap-2">
               <p className="text-sm text-slate-400">Total Gain/Loss</p>
               <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
             </div>
-            <p className={`mt-1 text-2xl font-bold ${
-              portfolioMetrics.totalGainLoss >= 0 ? 'text-green-400' : 'text-red-400'
+            <p className={`mt-2 text-3xl font-bold tracking-tight ${
+              portfolioMetrics.totalGainLoss >= 0 ? 'text-accent-success' : 'text-accent-danger'
             }`}>
               {portfolioMetrics.totalGainLoss >= 0 ? '+' : ''}${portfolioMetrics.totalGainLoss.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}
             </p>
           </div>
         </Tooltip>
         <Tooltip term="Return">
-          <div className="card">
+          <div className="neo-card group hover-lift">
             <div className="flex items-center gap-2">
               <p className="text-sm text-slate-400">Return</p>
               <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
             </div>
-            <p className={`mt-1 text-2xl font-bold ${
-              portfolioMetrics.gainLossPercent >= 0 ? 'text-green-400' : 'text-red-400'
+            <p className={`mt-2 text-3xl font-bold tracking-tight ${
+              portfolioMetrics.gainLossPercent >= 0 ? 'text-accent-success' : 'text-accent-danger'
             }`}>
               {portfolioMetrics.gainLossPercent.toFixed(1)}%
             </p>
@@ -402,9 +402,16 @@ export default function PortfolioInput() {
 
       {/* Diversity Badge */}
       <Tooltip term="Diversity">
-        <div className="card">
+        <div className="neo-card">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <div className="neo-icon">
+                {isWellDiversified ? (
+                  <CheckCircle2 className="h-5 w-5 text-accent-success" />
+                ) : (
+                  <AlertCircle className="h-5 w-5 text-accent-warning" />
+                )}
+              </div>
               <div>
                 <p className="text-sm text-slate-400 flex items-center gap-2">
                   Portfolio Diversity
@@ -415,30 +422,22 @@ export default function PortfolioInput() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              {isWellDiversified ? (
-                <>
-                  <CheckCircle2 className="h-5 w-5 text-green-400" />
-                  <span className="text-green-400">Well Diversified</span>
-                </>
-              ) : (
-                <>
-                  <AlertCircle className="h-5 w-5 text-yellow-400" />
-                  <span className="text-yellow-400">Add More Stocks</span>
-                </>
-              )}
+            <div className="text-right">
+              <p className={`text-sm font-medium ${isWellDiversified ? 'text-accent-success' : 'text-accent-warning'}`}>
+                {isWellDiversified ? 'Well Diversified' : 'Add More Stocks'}
+              </p>
             </div>
           </div>
         </div>
       </Tooltip>
 
       {/* Holdings Input */}
-      <div className="card">
+      <div className="neo-card overflow-hidden">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-white">Your Holdings</h2>
           <button
             onClick={addHolding}
-            className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 transition-colors flex items-center gap-2"
+            className="neo-btn-primary flex items-center gap-2 px-4 py-2 text-sm"
           >
             <Plus className="h-4 w-4" />
             Add Stock
@@ -448,7 +447,7 @@ export default function PortfolioInput() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-slate-700">
+              <tr className="border-b border-white/5">
                 <th className="px-4 py-3 text-left text-sm font-medium text-slate-400">Ticker</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-slate-400">Shares</th>
                 <th className="px-4 py-3 text-left text-sm font-medium text-slate-400">Buy Price</th>
@@ -468,7 +467,7 @@ export default function PortfolioInput() {
                 const hasLivePrice = prices[holding.ticker?.toUpperCase()] !== undefined
 
                 return (
-                  <tr key={holding.id} className="border-b border-slate-800">
+                  <tr key={holding.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
                     <td className="px-4 py-3">
                       <StockAutocomplete
                         value={holding.ticker}
@@ -484,7 +483,7 @@ export default function PortfolioInput() {
                         placeholder="10"
                         min="0"
                         step="0.01"
-                        className="w-24 rounded border border-slate-700 bg-slate-800 px-2 py-1.5 text-sm text-white focus:border-primary-500 focus:outline-none"
+                        className="neo-input w-24 px-3 py-2 text-sm"
                       />
                     </td>
                     <td className="px-4 py-3">
@@ -497,32 +496,32 @@ export default function PortfolioInput() {
                           placeholder="150"
                           min="0"
                           step="0.01"
-                          className="w-24 rounded border border-slate-700 bg-slate-800 px-2 py-1.5 text-sm text-white focus:border-primary-500 focus:outline-none"
+                          className="neo-input w-24 px-3 py-2 text-sm"
                         />
                       </div>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <p className="text-white">${currentValue.toFixed(2)}</p>
+                      <p className="text-white font-medium">${currentValue.toFixed(2)}</p>
                       <p className="text-xs text-slate-500 flex items-center justify-end gap-1">
                         @ ${currentPrice.toFixed(2)}
                         {hasLivePrice && (
-                          <span className="text-green-400">●</span>
+                          <span className="text-accent-success">●</span>
                         )}
                       </p>
                     </td>
-                    <td className={`px-4 py-3 text-right ${gainLoss >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      <p>{gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</p>
+                    <td className={`px-4 py-3 text-right ${gainLoss >= 0 ? 'text-accent-success' : 'text-accent-danger'}`}>
+                      <p className="font-medium">{gainLoss >= 0 ? '+' : ''}${gainLoss.toFixed(2)}</p>
                       <p className="text-xs">({gainLossPercent >= 0 ? '+' : ''}{gainLossPercent.toFixed(1)}%)</p>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <span className="inline-flex items-center rounded-full bg-slate-800 px-3 py-1 text-sm text-white">
+                      <span className="inline-flex items-center neo-pressed px-3 py-1 text-sm text-white">
                         {portfolioMetrics.holdings.find(h => h.id === holding.id)?.portfolioPercent || 0}%
                       </span>
                     </td>
                     <td className="px-4 py-3 text-center">
                       <button
                         onClick={() => removeHolding(holding.id)}
-                        className="rounded p-1.5 text-slate-400 hover:bg-slate-800 hover:text-red-400 transition-colors"
+                        className="neo-icon p-2 text-slate-400 hover:text-accent-danger"
                         title="Remove"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -541,46 +540,49 @@ export default function PortfolioInput() {
         <button
           onClick={analyzePortfolio}
           disabled={isAnalyzing || holdings.length === 0}
-          className="btn-primary flex items-center gap-2 px-8 py-3"
+          className="neo-btn-primary flex items-center gap-2 px-8 py-3 text-lg"
         >
           {isAnalyzing ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <Loader2 className="h-5 w-5 animate-spin" />
               Analyzing...
             </>
           ) : (
             <>
-              <TrendingUp className="h-4 w-4" />
+              <TrendingUp className="h-5 w-5" />
               Analyze Portfolio
             </>
           )}
         </button>
         {analysisError && (
-          <p className="text-sm text-red-400">⚠️ {analysisError}</p>
+          <p className="text-sm text-accent-warning flex items-center gap-2">
+            <AlertCircle className="h-4 w-4" />
+            {analysisError}
+          </p>
         )}
       </div>
 
       {/* Risk Metrics Results */}
       {riskMetrics && (
-        <div className="card">
-          <div className="mb-4 flex items-center justify-between">
+        <div className="neo-card">
+          <div className="mb-6 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">Risk Analysis Results</h2>
             {riskMetrics.simulated && (
-              <div className="flex items-center gap-2 rounded-lg bg-yellow-900/30 border border-yellow-700/50 px-3 py-1.5">
-                <AlertCircle className="h-4 w-4 text-yellow-400" />
-                <span className="text-xs text-yellow-300">Simulated data (API rate limited)</span>
+              <div className="flex items-center gap-2 neo-pressed px-3 py-1.5">
+                <AlertCircle className="h-4 w-4 text-accent-warning" />
+                <span className="text-xs text-accent-warning">Simulated data (API rate limited)</span>
               </div>
             )}
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {riskMetrics.value_at_risk && (
               <Tooltip term="Value at Risk (VaR)">
-                <div className="rounded-lg bg-slate-800/50 p-4">
+                <div className="neo-pressed p-4 hover-lift">
                   <div className="flex items-center gap-2">
                     <p className="text-sm text-slate-400">Value at Risk (95%)</p>
                     <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
                   </div>
-                  <p className="mt-1 text-xl font-bold text-white">
+                  <p className="mt-2 text-2xl font-bold text-white tracking-tight">
                     {Math.abs(riskMetrics.value_at_risk?.['95%']?.daily_percent || 0).toFixed(2)}%
                   </p>
                   <p className="mt-1 text-xs text-slate-500">Daily potential loss</p>
@@ -589,12 +591,12 @@ export default function PortfolioInput() {
             )}
             {riskMetrics.sharpe_ratio && (
               <Tooltip term="Sharpe Ratio">
-                <div className="rounded-lg bg-slate-800/50 p-4">
+                <div className="neo-pressed p-4 hover-lift">
                   <div className="flex items-center gap-2">
                     <p className="text-sm text-slate-400">Sharpe Ratio</p>
                     <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
                   </div>
-                  <p className="mt-1 text-xl font-bold text-white">
+                  <p className="mt-2 text-2xl font-bold text-white tracking-tight">
                     {(riskMetrics.sharpe_ratio?.sharpe_ratio || 0).toFixed(2)}
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
@@ -605,12 +607,12 @@ export default function PortfolioInput() {
             )}
             {riskMetrics.beta && (
               <Tooltip term="Beta">
-                <div className="rounded-lg bg-slate-800/50 p-4">
+                <div className="neo-pressed p-4 hover-lift">
                   <div className="flex items-center gap-2">
                     <p className="text-sm text-slate-400">Beta (vs S&P 500)</p>
                     <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
                   </div>
-                  <p className="mt-1 text-xl font-bold text-white">
+                  <p className="mt-2 text-2xl font-bold text-white tracking-tight">
                     {(riskMetrics.beta?.beta || 0).toFixed(2)}
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
@@ -621,12 +623,12 @@ export default function PortfolioInput() {
             )}
             {riskMetrics.portfolio_statistics && (
               <Tooltip term="Annual Volatility">
-                <div className="rounded-lg bg-slate-800/50 p-4">
+                <div className="neo-pressed p-4 hover-lift">
                   <div className="flex items-center gap-2">
                     <p className="text-sm text-slate-400">Annual Volatility</p>
                     <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
                   </div>
-                  <p className="mt-1 text-xl font-bold text-white">
+                  <p className="mt-2 text-2xl font-bold text-white tracking-tight">
                     {(riskMetrics.sharpe_ratio?.annual_volatility_percent || riskMetrics.portfolio_statistics?.annual_volatility_percent || 0).toFixed(1)}%
                   </p>
                   <p className="mt-1 text-xs text-slate-500">Price fluctuation</p>
@@ -635,12 +637,12 @@ export default function PortfolioInput() {
             )}
             {riskMetrics.max_drawdown && (
               <Tooltip term="Max Drawdown">
-                <div className="rounded-lg bg-slate-800/50 p-4">
+                <div className="neo-pressed p-4 hover-lift">
                   <div className="flex items-center gap-2">
                     <p className="text-sm text-slate-400">Max Drawdown</p>
                     <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
                   </div>
-                  <p className="mt-1 text-xl font-bold text-white">
+                  <p className="mt-2 text-2xl font-bold text-white tracking-tight">
                     {Math.abs(riskMetrics.max_drawdown?.max_drawdown_percent || 0).toFixed(1)}%
                   </p>
                   <p className="mt-1 text-xs text-slate-500">Worst historical decline</p>
@@ -653,24 +655,26 @@ export default function PortfolioInput() {
 
       {/* Info Cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <div className="card border border-primary-500/30 bg-primary-900/10">
-          <h3 className="mb-2 font-medium text-white flex items-center gap-2">
-            <Info className="h-4 w-4 text-primary-400" />
+        <div className="neo-card border border-primary-500/20">
+          <h3 className="mb-3 font-medium text-white flex items-center gap-2">
+            <div className="neo-icon p-1.5">
+              <Info className="h-3.5 w-3.5 text-primary-400" />
+            </div>
             How it works
           </h3>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-400 leading-relaxed">
             Enter your stock/crypto holdings with shares and buy price. We'll automatically calculate portfolio diversity, percentages, and real-time risk metrics.
           </p>
         </div>
-        <div className="card">
-          <h3 className="mb-2 font-medium text-white">Live Data</h3>
-          <p className="text-sm text-slate-400">
+        <div className="neo-card">
+          <h3 className="mb-3 font-medium text-white">Live Data</h3>
+          <p className="text-sm text-slate-400 leading-relaxed">
             Current prices update every 2 minutes from market data. Your portfolio value updates automatically as prices change.
           </p>
         </div>
-        <div className="card">
-          <h3 className="mb-2 font-medium text-white">Risk Metrics</h3>
-          <p className="text-sm text-slate-400">
+        <div className="neo-card">
+          <h3 className="mb-3 font-medium text-white">Risk Metrics</h3>
+          <p className="text-sm text-slate-400 leading-relaxed">
             VaR, Sharpe ratio, beta, volatility, and drawdown calculated based on your actual holdings.
           </p>
         </div>

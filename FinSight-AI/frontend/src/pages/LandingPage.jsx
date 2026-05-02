@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import {
   TrendingUp,
   ShieldAlert,
@@ -8,30 +9,77 @@ import {
   Activity,
   ArrowRight,
   CheckCircle2,
-  ChevronRight,
   Github,
-  Twitter
+  Twitter,
+  Bell,
+  PieChart,
+  Eye
 } from 'lucide-react'
 
 export default function LandingPage() {
+  const [expandedCard, setExpandedCard] = useState(null)
+  const [visibleFeatures, setVisibleFeatures] = useState([])
+
   const features = [
     {
+      id: 1,
       icon: ShieldAlert,
       title: 'Real-Time Risk Metrics',
-      description: 'Track VaR, Sharpe ratio, beta, volatility, and max drawdown with live market data integration.',
-      color: 'from-red-500 to-orange-500'
+      shortDesc: 'Live VaR, Sharpe, Beta tracking',
+      fullDesc: 'Track Value at Risk, Sharpe ratio, beta, volatility, and max drawdown with live market data integration. Get instant updates as market conditions change.',
+      details: ['VaR (95%, 99%)', 'Sharpe Ratio', 'Beta Coefficient', 'Volatility Metrics', 'Max Drawdown', 'Sortino Ratio'],
+      color: 'from-red-500 to-orange-500',
+      delay: 0
     },
     {
+      id: 2,
       icon: Bot,
       title: 'AI-Powered Explanations',
-      description: 'Get plain English insights from Llama 3. Understand your portfolio risks without the financial jargon.',
-      color: 'from-primary-500 to-purple-500'
+      shortDesc: 'Llama 3 insights in plain English',
+      fullDesc: 'Get plain English insights from Llama 3. Understand your portfolio risks without the financial jargon. Ask questions and get instant, clear answers.',
+      details: ['Natural Language Queries', 'Context-Aware Analysis', 'Instant Explanations', 'Risk Breakdowns', 'Recommendations'],
+      color: 'from-primary-500 to-purple-500',
+      delay: 100
     },
     {
+      id: 3,
       icon: Zap,
       title: 'Scenario Simulation',
-      description: 'Test your portfolio against market crashes, rate hikes, or bull runs. See the impact before it happens.',
-      color: 'from-yellow-500 to-amber-500'
+      shortDesc: 'Test crashes, rate hikes, bull runs',
+      fullDesc: 'Test your portfolio against market crashes, rate hikes, or bull runs. See the impact before it happens with Monte Carlo simulations.',
+      details: ['Market Crash Scenarios', 'Interest Rate Changes', 'Bull/Bear Markets', 'Custom Parameters', 'Historical Replay'],
+      color: 'from-yellow-500 to-amber-500',
+      delay: 200
+    },
+    {
+      id: 4,
+      icon: Eye,
+      title: 'Anomaly Detection',
+      shortDesc: 'AI catches unusual patterns',
+      fullDesc: 'Our AI monitors your portfolio 24/7 and alerts you to unusual patterns, sudden changes, or potential risks before they become problems.',
+      details: ['Pattern Recognition', 'Outlier Detection', 'Trend Analysis', 'Automatic Alerts', 'Historical Comparison'],
+      color: 'from-purple-500 to-pink-500',
+      delay: 300
+    },
+    {
+      id: 5,
+      icon: Bell,
+      title: 'Smart Alerts',
+      shortDesc: 'Custom threshold notifications',
+      fullDesc: 'Set custom thresholds for any metric and receive instant notifications when your portfolio needs attention. Never miss a critical risk signal.',
+      details: ['Custom Thresholds', 'Multi-Channel Alerts', 'Risk Level Warnings', 'Daily Summaries', 'Push Notifications'],
+      color: 'from-green-500 to-emerald-500',
+      delay: 400
+    },
+    {
+      id: 6,
+      icon: PieChart,
+      title: 'Portfolio Analytics',
+      shortDesc: 'Full composition breakdown',
+      fullDesc: 'Understand your portfolio composition with detailed analytics. Sector exposure, geographic distribution, and concentration analysis at your fingertips.',
+      details: ['Sector Breakdown', 'Geographic Exposure', 'Concentration Analysis', 'Correlation Matrix', 'Performance Attribution'],
+      color: 'from-blue-500 to-cyan-500',
+      delay: 500
     }
   ]
 
@@ -42,37 +90,38 @@ export default function LandingPage() {
     { value: '24/7', label: 'Monitoring' }
   ]
 
-  const useCases = [
-    {
-      title: 'Portfolio Managers',
-      description: 'Monitor client portfolios in real-time and explain risks in language anyone can understand.'
-    },
-    {
-      title: 'Retail Investors',
-      description: 'Stop guessing. Know exactly how much risk you\'re taking and if it\'s worth the reward.'
-    },
-    {
-      title: 'Financial Advisors',
-      description: 'Provide clients with clear, AI-generated risk reports that build trust and transparency.'
-    },
-    {
-      title: 'Quant Researchers',
-      description: 'Rapid scenario testing and anomaly detection to identify hidden portfolio risks.'
-    }
-  ]
+  useEffect(() => {
+    // Staggered animation for feature cards
+    const timeouts = features.map((f, i) =>
+      setTimeout(() => {
+        setVisibleFeatures(prev => [...prev, f.id])
+      }, f.delay)
+    )
+    return () => timeouts.forEach(clearTimeout)
+  }, [])
+
+  const toggleCard = (id) => {
+    setExpandedCard(expandedCard === id ? null : id)
+  }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-neo">
+      {/* Background effects */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+      </div>
+
       {/* Navigation */}
-      <nav className="border-b border-slate-800">
+      <nav className="relative border-b border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-700">
-                <TrendingUp className="h-5 w-5 text-white" />
+            <Link to="/" className="flex items-center gap-3">
+              <div className="neo-icon">
+                <TrendingUp className="h-6 w-6 text-primary-400" />
               </div>
               <span className="text-xl font-bold text-white">FinSight AI</span>
-            </div>
+            </Link>
 
             <div className="hidden items-center gap-6 md:flex">
               <a href="#features" className="text-sm text-slate-400 hover:text-white transition-colors">
@@ -86,16 +135,16 @@ export default function LandingPage() {
               </a>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <Link
                 to="/login"
-                className="text-sm text-slate-400 hover:text-white transition-colors"
+                className="text-sm text-slate-400 hover:text-white transition-colors px-3 py-2"
               >
                 Sign In
               </Link>
               <Link
                 to="/login"
-                className="btn-primary flex items-center gap-2"
+                className="neo-btn-primary flex items-center gap-2 text-sm px-5 py-2.5"
               >
                 Try Demo
                 <ArrowRight className="h-4 w-4" />
@@ -105,85 +154,129 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-900/20 via-slate-950 to-slate-950" />
-
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(14, 165, 233, 0.15) 1px, transparent 0)',
-            backgroundSize: '40px 40px'
-          }} />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 pb-32">
-          <div className="mx-auto max-w-4xl text-center">
+      {/* Hero Section - Feature Showcase */}
+      <section className="relative py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {/* Hero Text */}
+          <div className="mx-auto max-w-3xl text-center mb-16 animate-fade-in-up">
             {/* Badge */}
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary-900/30 border border-primary-700 px-4 py-2">
-              <span className="flex h-2 w-2 rounded-full bg-primary-400 animate-pulse" />
-              <span className="text-sm text-primary-300">Now with AI-powered risk explanations</span>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full neo-pressed px-4 py-2">
+              <span className="flex h-2 w-2 rounded-full bg-accent-success animate-subtle-pulse" />
+              <span className="text-sm text-slate-300">Now with AI-powered risk explanations</span>
             </div>
 
             {/* Headline */}
-            <h1 className="text-5xl font-bold text-white sm:text-6xl lg:text-7xl">
+            <h1 className="text-4xl font-bold text-white sm:text-5xl lg:text-6xl tracking-tight">
               Understand your portfolio
-              <span className="block bg-gradient-to-r from-primary-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="block gradient-text mt-2">
                 risk in plain English
               </span>
             </h1>
 
             {/* Subheadline */}
-            <p className="mt-6 text-lg text-slate-400 sm:text-xl max-w-2xl mx-auto">
+            <p className="mt-6 text-lg text-slate-400 sm:text-xl max-w-2xl mx-auto leading-relaxed">
               Stop deciphering complex financial metrics. FinSight AI translates your portfolio risks
-              into clear, actionable insights powered by Llama 3 — so you can invest with confidence.
+              into clear, actionable insights powered by Llama 3.
             </p>
+          </div>
 
-            {/* CTA Buttons */}
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                to="/login"
-                className="btn-primary flex items-center gap-2 px-8 py-4 text-lg"
+          {/* Feature Cards Grid - The Main Hero Content */}
+          <div id="features" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature) => (
+              <div
+                key={feature.id}
+                className={`
+                  neo-card cursor-pointer relative overflow-hidden
+                  ${visibleFeatures.includes(feature.id) ? 'animate-fade-in-up' : 'opacity-0'}
+                  ${expandedCard === feature.id ? 'ring-2 ring-primary-500/50' : ''}
+                `}
+                style={{ animationDelay: `${feature.delay}ms` }}
+                onClick={() => toggleCard(feature.id)}
               >
-                Try Demo Free
-                <ArrowRight className="h-5 w-5" />
-              </Link>
+                {/* Card Header */}
+                <div className="flex items-start gap-4">
+                  <div className={`neo-icon flex-shrink-0 bg-gradient-to-br ${feature.color}`}>
+                    <feature.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-white">{feature.title}</h3>
+                    <p className="mt-1 text-sm text-slate-400">{feature.shortDesc}</p>
+                  </div>
+                </div>
+
+                {/* Expandable Content */}
+                <div className={`
+                  mt-4 overflow-hidden transition-all duration-300 ease-in-out
+                  ${expandedCard === feature.id ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}
+                `}>
+                  <div className="pt-4 border-t border-white/5">
+                    <p className="text-sm text-slate-300 leading-relaxed">{feature.fullDesc}</p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {feature.details.map((detail, idx) => (
+                        <span
+                          key={idx}
+                          className="neo-pressed px-3 py-1 text-xs text-slate-400"
+                        >
+                          {detail}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Expand Indicator */}
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="text-xs text-slate-500">Click to {expandedCard === feature.id ? 'collapse' : 'expand'}</span>
+                  <ArrowRight className={`
+                    h-4 w-4 text-primary-400 transition-transform duration-300
+                    ${expandedCard === feature.id ? 'rotate-90' : ''}
+                  `} />
+                </div>
+
+                {/* Hover Glow Effect */}
+                <div className={`
+                  absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0
+                  hover:opacity-5 transition-opacity duration-300 pointer-events-none
+                `} />
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="mt-16 flex flex-col items-center justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '600ms' }}>
+            <Link
+              to="/login"
+              className="neo-btn-primary flex items-center gap-2 px-10 py-4 text-lg glow-primary"
+            >
+              Start Analyzing Free
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+            <div className="flex items-center gap-6 text-sm text-slate-500">
               <a
                 href="https://github.com/skdey-00/FinSight"
-                className="btn-secondary flex items-center gap-2 px-8 py-4 text-lg"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-slate-300 transition-colors"
               >
-                <Github className="h-5 w-5" />
+                <Github className="h-4 w-4" />
                 View on GitHub
               </a>
-            </div>
-
-            {/* Trust badges */}
-            <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-slate-500">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-400" />
-                <span>No credit card required</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-400" />
-                <span>Real-time market data</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-400" />
-                <span>AI-powered insights</span>
-              </div>
+              <span className="flex items-center gap-1">
+                <CheckCircle2 className="h-4 w-4 text-accent-success" />
+                No credit card required
+              </span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="border-y border-slate-800 bg-slate-900/30">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <section className="border-y border-white/5 py-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <p className="text-3xl font-bold text-white">{stat.value}</p>
+                <p className="text-3xl font-bold gradient-text">{stat.value}</p>
                 <p className="mt-1 text-sm text-slate-400">{stat.label}</p>
               </div>
             ))}
@@ -191,40 +284,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="text-3xl font-bold text-white">Everything you need to understand risk</h2>
-            <p className="mt-4 text-slate-400">
-              Professional-grade risk analytics, explained in a way anyone can understand.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="card group hover:border-slate-600 transition-all"
-              >
-                <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br ${feature.color}`}>
-                  <feature.icon className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="mb-3 text-xl font-semibold text-white">{feature.title}</h3>
-                <p className="text-slate-400">{feature.description}</p>
-
-                {/* Hover effect indicator */}
-                <div className="mt-4 flex items-center gap-2 text-sm text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Learn more <ChevronRight className="h-4 w-4" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How It Works */}
-      <section id="how-it-works" className="py-24 bg-slate-900/30">
+      <section id="how-it-works" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="text-3xl font-bold text-white">How it works</h2>
@@ -238,30 +299,36 @@ export default function LandingPage() {
               {
                 step: '01',
                 title: 'Input your portfolio',
-                description: 'Add your holdings and weights. We\'ll fetch live market data automatically.'
+                description: 'Add your holdings and weights. We\'ll fetch live market data automatically.',
+                icon: PieChart
               },
               {
                 step: '02',
                 title: 'AI analyzes your risk',
-                description: 'Our engine calculates 15+ risk metrics and Llama 3 explains what they mean.'
+                description: 'Our engine calculates 15+ risk metrics and Llama 3 explains what they mean.',
+                icon: Bot
               },
               {
                 step: '03',
                 title: 'Get actionable insights',
-                description: 'Receive clear recommendations, run scenarios, and set up custom alerts.'
+                description: 'Receive clear recommendations, run scenarios, and set up custom alerts.',
+                icon: Activity
               }
             ].map((item, index) => (
-              <div key={index} className="relative">
-                <div className="card h-full">
-                  <div className="mb-4 text-5xl font-bold text-slate-700">{item.step}</div>
-                  <h3 className="mb-3 text-xl font-semibold text-white">{item.title}</h3>
-                  <p className="text-slate-400">{item.description}</p>
+              <div key={index} className="neo-card relative group">
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-purple-500 text-white font-bold">
+                  {item.step}
                 </div>
+                <div className="neo-icon mb-4">
+                  <item.icon className="h-6 w-6 text-primary-400" />
+                </div>
+                <h3 className="mb-3 text-xl font-semibold text-white">{item.title}</h3>
+                <p className="text-slate-400">{item.description}</p>
 
-                {/* Connector line */}
+                {/* Connector */}
                 {index < 2 && (
-                  <div className="hidden absolute left-1/2 top-1/2 -translate-x-1/2 md:block">
-                    <ChevronRight className="h-6 w-6 text-slate-700" />
+                  <div className="hidden absolute top-1/2 -right-4 -translate-y-1/2 md:block">
+                    <ArrowRight className="h-6 w-6 text-slate-700" />
                   </div>
                 )}
               </div>
@@ -270,29 +337,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Use Cases */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-16">
-            <h2 className="text-3xl font-bold text-white">Built for everyone who manages risk</h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {useCases.map((useCase, index) => (
-              <div key={index} className="card hover:border-slate-600 transition-all">
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800">
-                  <Activity className="h-5 w-5 text-primary-400" />
-                </div>
-                <h3 className="font-semibold text-white">{useCase.title}</h3>
-                <p className="mt-2 text-sm text-slate-400">{useCase.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Metrics Preview */}
-      <section className="py-24 bg-slate-900/30">
+      <section className="py-24 border-t border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-16">
             <h2 className="text-3xl font-bold text-white">See your risks at a glance</h2>
@@ -303,40 +349,46 @@ export default function LandingPage() {
 
           {/* Dashboard Preview */}
           <div className="mx-auto max-w-5xl">
-            <div className="card overflow-hidden">
-              {/* Fake dashboard header */}
-              <div className="border-b border-slate-700 px-6 py-4">
-                <div className="flex items-center gap-4">
-                  <div className="h-3 w-3 rounded-full bg-green-400" />
-                  <span className="text-sm text-slate-400">Live Dashboard Demo</span>
-                </div>
+            <div className="neo-card overflow-hidden p-0">
+              {/* Header */}
+              <div className="border-b border-white/5 px-6 py-4 flex items-center gap-4">
+                <span className="flex h-3 w-3 rounded-full bg-accent-success animate-subtle-pulse" />
+                <span className="text-sm text-slate-400">Live Dashboard Demo</span>
               </div>
 
-              {/* Fake metrics */}
-              <div className="grid grid-cols-4 gap-4 p-6">
+              {/* Metrics */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6">
                 {[
                   { label: 'Value at Risk', value: '-2.34%', good: true },
                   { label: 'Sharpe Ratio', value: '1.24', good: true },
                   { label: 'Beta', value: '1.15', good: false },
                   { label: 'Max Drawdown', value: '-8.5%', good: true }
                 ].map((metric, i) => (
-                  <div key={i} className={`rounded-lg p-4 ${metric.good ? 'bg-green-900/20' : 'bg-yellow-900/20'}`}>
-                    <p className="text-xs text-slate-400">{metric.label}</p>
-                    <p className={`mt-2 text-lg font-bold ${metric.good ? 'text-green-400' : 'text-yellow-400'}`}>
+                  <div
+                    key={i}
+                    className={`
+                      neo-pressed p-4 text-center
+                      ${metric.good ? 'text-accent-success' : 'text-accent-warning'}
+                    `}
+                  >
+                    <p className="text-xs text-slate-500">{metric.label}</p>
+                    <p className="mt-2 text-xl font-bold text-white">
                       {metric.value}
                     </p>
                   </div>
                 ))}
               </div>
 
-              {/* Fake AI explanation */}
-              <div className="border-t border-slate-700 p-6">
+              {/* AI explanation */}
+              <div className="border-t border-white/5 p-6">
                 <div className="flex items-start gap-3">
-                  <Bot className="h-5 w-5 text-primary-400 mt-1" />
+                  <div className="neo-icon flex-shrink-0 bg-gradient-to-br from-primary-500 to-purple-500">
+                    <Bot className="h-5 w-5 text-white" />
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-slate-300">AI Analysis</p>
-                    <p className="mt-1 text-sm text-slate-400">
-                      "Your portfolio has moderate risk with a concentration in technology (52%). Consider diversifying..."
+                    <p className="mt-1 text-sm text-slate-400 leading-relaxed">
+                      "Your portfolio has moderate risk with a concentration in technology (52%). Consider diversifying into other sectors to reduce volatility..."
                     </p>
                   </div>
                 </div>
@@ -350,18 +402,18 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24">
+      {/* Final CTA */}
+      <section className="py-24 border-t border-white/5">
         <div className="mx-auto max-w-4xl px-4 text-center">
           <h2 className="text-3xl font-bold text-white">Ready to understand your risk?</h2>
           <p className="mt-4 text-slate-400">
             Join hundreds of investors who use FinSight AI to make better decisions.
           </p>
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-center gap-4">
             <Link
               to="/demo"
-              className="btn-primary flex items-center gap-2 px-8 py-4 text-lg"
+              className="neo-btn-primary flex items-center gap-2 px-10 py-4 text-lg glow-primary"
             >
               Start Free Trial
               <ArrowRight className="h-5 w-5" />
@@ -372,13 +424,13 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800 py-12">
+      <footer className="border-t border-white/5 py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-700">
-                  <TrendingUp className="h-4 w-4 text-white" />
+                <div className="neo-icon">
+                  <TrendingUp className="h-5 w-5 text-primary-400" />
                 </div>
                 <span className="text-lg font-bold text-white">FinSight AI</span>
               </div>
@@ -408,17 +460,17 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-8 md:flex-row">
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
             <p className="text-sm text-slate-500">
               © 2025 FinSight AI. All rights reserved.
             </p>
 
             <div className="flex items-center gap-4">
-              <a href="https://github.com/skdey-00/FinSight" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
-                <Github className="h-5 w-5" />
+              <a href="https://github.com/skdey-00/FinSight" target="_blank" rel="noopener noreferrer" className="neo-icon p-2 text-slate-400 hover:text-white">
+                <Github className="h-4 w-4" />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
-                <Twitter className="h-5 w-5" />
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="neo-icon p-2 text-slate-400 hover:text-white">
+                <Twitter className="h-4 w-4" />
               </a>
             </div>
           </div>

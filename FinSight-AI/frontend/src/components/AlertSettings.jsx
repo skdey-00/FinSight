@@ -14,6 +14,19 @@ import {
 } from 'lucide-react'
 import { useAlertSettings } from '../contexts/AuthContext'
 
+// Toggle switch component
+const ToggleSwitch = ({ enabled, onToggle }) => {
+  return (
+    <button
+      onClick={onToggle}
+      className={`toggle-button ${enabled ? 'active' : ''}`}
+      type="button"
+    >
+      <span className={`toggle-thumb ${enabled ? 'active' : ''}`} />
+    </button>
+  )
+}
+
 // Threshold slider component
 const ThresholdSlider = ({
   label,
@@ -29,16 +42,16 @@ const ThresholdSlider = ({
 }) => {
   const colors = {
     primary: 'text-primary-400',
-    red: 'text-red-400',
-    yellow: 'text-yellow-400',
-    green: 'text-green-400'
+    red: 'text-accent-danger',
+    yellow: 'text-accent-warning',
+    green: 'text-accent-success'
   }
 
   return (
-    <div className={`card transition-all ${!enabled ? 'opacity-50' : ''}`}>
+    <div className={`neo-card transition-all ${!enabled ? 'opacity-50' : ''}`}>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
-          <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${enabled ? 'bg-slate-800' : 'bg-slate-900'}`}>
+          <div className="neo-icon">
             <Icon className={`h-5 w-5 ${colors[color]}`} />
           </div>
           <div>
@@ -49,20 +62,7 @@ const ThresholdSlider = ({
           </div>
         </div>
 
-        <button
-          onClick={onToggle}
-          className={`
-            relative h-6 w-11 cursor-pointer rounded-full transition-colors duration-200
-            ${enabled ? 'bg-primary-600' : 'bg-slate-700'}
-          `}
-        >
-          <span
-            className={`
-              absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 pointer-events-none
-              ${enabled ? 'translate-x-6' : 'translate-x-1'}
-            `}
-          />
-        </button>
+        <ToggleSwitch enabled={enabled} onToggle={onToggle} />
       </div>
 
       {enabled && (
@@ -74,7 +74,7 @@ const ThresholdSlider = ({
             step={0.5}
             value={value}
             onChange={(e) => onChange(parseFloat(e.target.value))}
-            className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-primary-500"
+            className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary-500"
           />
           <div className="mt-2 flex items-center justify-between text-sm">
             <span className="text-slate-500">{min}{suffix}</span>
@@ -155,7 +155,7 @@ export default function AlertSettings({ onSave }) {
 
   if (isLoading || !localSettings) {
     return (
-      <div className="card flex h-64 items-center justify-center">
+      <div className="neo-card flex h-64 items-center justify-center">
         <div className="text-center">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent" />
           <p className="text-slate-400">Loading alert settings...</p>
@@ -188,9 +188,9 @@ export default function AlertSettings({ onSave }) {
 
       {/* Error banner */}
       {saveError && (
-        <div className="flex items-center justify-between rounded-lg bg-yellow-900/30 border border-yellow-800 px-4 py-3">
-          <span className="text-sm text-yellow-300">{saveError}</span>
-          <button onClick={() => setSaveError(null)} className="text-yellow-400 hover:text-yellow-300">
+        <div className="flex items-center justify-between neo-pressed px-4 py-3 rounded-xl border border-accent-warning/30">
+          <span className="text-sm text-accent-warning">{saveError}</span>
+          <button onClick={() => setSaveError(null)} className="text-accent-warning hover:text-white">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -254,13 +254,13 @@ export default function AlertSettings({ onSave }) {
       </div>
 
       {/* Notification Preferences */}
-      <div className="card">
+      <div className="neo-card">
         <h3 className="mb-4 text-sm font-medium text-slate-400 uppercase tracking-wide">
           Notification Preferences
         </h3>
 
         <div className="space-y-3">
-          <div className="flex items-center justify-between rounded-lg bg-slate-800/50 p-4">
+          <div className="flex items-center justify-between neo-pressed p-4 rounded-xl">
             <div className="flex items-center gap-3">
               <Mail className="h-5 w-5 text-slate-400" />
               <div>
@@ -268,23 +268,13 @@ export default function AlertSettings({ onSave }) {
                 <p className="text-sm text-slate-400">Receive alerts via email</p>
               </div>
             </div>
-            <button
-              onClick={() => toggleNotification('emailNotifications')}
-              className={`
-                relative h-6 w-11 cursor-pointer rounded-full transition-colors duration-200
-                ${localSettings.emailNotifications ? 'bg-primary-600' : 'bg-slate-700'}
-              `}
-            >
-              <span
-                className={`
-                  absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 pointer-events-none
-                  ${localSettings.emailNotifications ? 'translate-x-6' : 'translate-x-1'}
-                `}
-              />
-            </button>
+            <ToggleSwitch
+              enabled={localSettings.emailNotifications}
+              onToggle={() => toggleNotification('emailNotifications')}
+            />
           </div>
 
-          <div className="flex items-center justify-between rounded-lg bg-slate-800/50 p-4">
+          <div className="flex items-center justify-between neo-pressed p-4 rounded-xl">
             <div className="flex items-center gap-3">
               <Smartphone className="h-5 w-5 text-slate-400" />
               <div>
@@ -292,28 +282,20 @@ export default function AlertSettings({ onSave }) {
                 <p className="text-sm text-slate-400">Browser push notifications</p>
               </div>
             </div>
-            <button
-              onClick={() => toggleNotification('pushNotifications')}
-              className={`
-                relative h-6 w-11 cursor-pointer rounded-full transition-colors duration-200
-                ${localSettings.pushNotifications ? 'bg-primary-600' : 'bg-slate-700'}
-              `}
-            >
-              <span
-                className={`
-                  absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 pointer-events-none
-                  ${localSettings.pushNotifications ? 'translate-x-6' : 'translate-x-1'}
-                `}
-              />
-            </button>
+            <ToggleSwitch
+              enabled={localSettings.pushNotifications}
+              onToggle={() => toggleNotification('pushNotifications')}
+            />
           </div>
         </div>
       </div>
 
       {/* Alert Summary */}
-      <div className="card bg-gradient-to-r from-primary-900/20 to-purple-900/20 border-primary-800">
+      <div className="neo-card border border-primary-500/20">
         <div className="flex items-start gap-3">
-          <BellRing className="h-5 w-5 text-primary-400 mt-0.5" />
+          <div className="neo-icon p-2">
+            <BellRing className="h-4 w-4 text-primary-400" />
+          </div>
           <div>
             <h4 className="font-medium text-white">How Alerts Work</h4>
             <p className="mt-1 text-sm text-slate-400">
@@ -328,7 +310,7 @@ export default function AlertSettings({ onSave }) {
       <button
         onClick={handleSave}
         disabled={isSaving}
-        className="btn-primary w-full flex items-center justify-center gap-2 py-3"
+        className="neo-btn-primary w-full flex items-center justify-center gap-2 py-3"
       >
         {isSaving ? (
           <>
