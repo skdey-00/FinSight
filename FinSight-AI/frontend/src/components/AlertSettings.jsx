@@ -52,13 +52,13 @@ const ThresholdSlider = ({
         <button
           onClick={onToggle}
           className={`
-            relative h-6 w-11 rounded-full transition-colors duration-200
+            relative h-6 w-11 cursor-pointer rounded-full transition-colors duration-200
             ${enabled ? 'bg-primary-600' : 'bg-slate-700'}
           `}
         >
           <span
             className={`
-              absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200
+              absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 pointer-events-none
               ${enabled ? 'translate-x-6' : 'translate-x-1'}
             `}
           />
@@ -271,13 +271,13 @@ export default function AlertSettings({ onSave }) {
             <button
               onClick={() => toggleNotification('emailNotifications')}
               className={`
-                relative h-6 w-11 rounded-full transition-colors duration-200
+                relative h-6 w-11 cursor-pointer rounded-full transition-colors duration-200
                 ${localSettings.emailNotifications ? 'bg-primary-600' : 'bg-slate-700'}
               `}
             >
               <span
                 className={`
-                  absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200
+                  absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 pointer-events-none
                   ${localSettings.emailNotifications ? 'translate-x-6' : 'translate-x-1'}
                 `}
               />
@@ -295,13 +295,13 @@ export default function AlertSettings({ onSave }) {
             <button
               onClick={() => toggleNotification('pushNotifications')}
               className={`
-                relative h-6 w-11 rounded-full transition-colors duration-200
+                relative h-6 w-11 cursor-pointer rounded-full transition-colors duration-200
                 ${localSettings.pushNotifications ? 'bg-primary-600' : 'bg-slate-700'}
               `}
             >
               <span
                 className={`
-                  absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200
+                  absolute top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 pointer-events-none
                   ${localSettings.pushNotifications ? 'translate-x-6' : 'translate-x-1'}
                 `}
               />
